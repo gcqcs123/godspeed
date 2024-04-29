@@ -1,0 +1,30 @@
+from picamera import PiCamera
+from time import sleep
+
+camera = PiCamera()
+camera.rotation = 0
+camera.start_preview(alpha=200)
+
+# Capture 5 images with annotation
+for i in range(5):
+    camera.annotate_text = "hello world"
+    sleep(5)
+    camera.capture('/home/gcq/Desktop/New/image{}.jpg'.format(i))
+
+# Start recording video
+camera.start_recording('/home/gcq/Desktop/New/video.h264')
+sleep(25)  # Record for 25 seconds
+camera.stop_recording()
+
+# Stop camera preview
+camera.stop_preview()
+
+# Close camera instance
+camera.close()
+
+//sudo-raspi-config
+//Go to interfaces
+//Then turn on legacy camera
+//After that run pip-install-pi-cam
+//sudo-raspi-config>Interfaces>LegacyCamera>ON
+
