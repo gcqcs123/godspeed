@@ -1,0 +1,239 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+df = pd.read_csv("diabetes1.csv")
+df
+
+--------------------------------------------
+#mean median mode
+
+statistics = {
+    'mean': df.mean(),
+    'median' : df.median(),
+    'standard deviation' : df.std()
+}
+statistics_df = pd.DataFrame(statistics)
+print(statistics)
+
+------------------------------------------
+
+print(df.head())
+
+print(df.tail())
+
+print(df.shape)
+
+print(df.isnull().sum())
+----------------------------------------------------------------------
+#add row
+new_row_values = [105, 30, 85, 44.4, 56, 0]
+df.loc[len(df)] = new_row_values
+print(df)
+
+# add new column
+new_column_values = [56 ,40, 55, 70, 85, 100, 115, 130, 145, 60, 75, 90, 105, 120, 135, 150, 65, 80, 95, 110
+]
+df['NewColumn'] = new_column_values
+print(df)
+
+#drop
+df = df.drop("Age",axis=1)
+print(df)
+
+
+#rename
+df = df.rename(columns={"BloodPressure": "BP"})
+print(df)
+
+
+#replace null with avg
+avg_bmi = df["BMI"].mean()
+df["BMI"].fillna(avg_bmi, inplace=True)
+print(df)
+
+------------------------------------------------------------------------------------
+
+#save changes to csv
+df.to_csv('diabetes1.csv',index=False)
+
+
+#combine 1 and 2 
+
+df1 = pd.read_csv("diabetes1.csv")
+df2 = pd.read_csv("diabetes2.csv")
+comb = pd.concat([df1, df2])
+comb.to_csv("comb.csv", index=False)
+df = pd.read_csv("comb.csv")
+df
+
+-----------------------------------------------------------------------------
+#DATA VISUALISATION
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset into a DataFrame
+df = pd.read_csv("comb.csv.")
+
+# Histograms
+plt.figure(figsize=(12, 10))
+plt.subplot(2, 2, 1)
+sns.histplot(data=df, x="Glucose", kde=True, color='skyblue')
+plt.title("Distribution of Glucose")
+
+plt.subplot(2, 2, 2)
+sns.histplot(data=df, x="BP", kde=True, color='lightcoral')
+plt.title("Distribution of BP")
+
+plt.subplot(2, 2, 3)
+sns.histplot(data=df, x="Insulin", kde=True, color='orange')
+plt.title("Distribution of Insulin")
+
+plt.subplot(2, 2, 4)
+sns.histplot(data=df, x="BMI", kde=True, color='green')
+plt.title("Distribution of BMI")
+
+plt.tight_layout()
+plt.show()
+
+
+------------------------------------------------------------------
+
+# Box plots
+
+plt.figure(figsize=(12, 10))
+plt.subplot(2, 2, 1)
+sns.boxplot(data=df, x="Glucose", color='skyblue')
+plt.title("Box Plot of Glucose")
+
+plt.subplot(2, 2, 2)
+sns.boxplot(data=df, x="BP", color='lightcoral')
+plt.title("Box Plot of BP")
+
+plt.subplot(2, 2, 3)
+sns.boxplot(data=df, x="Insulin", color='orange')
+plt.title("Box Plot of Insulin")
+
+plt.subplot(2, 2, 4)
+sns.boxplot(data=df, x="BMI", color='green')
+plt.title("Box Plot of BMI")
+
+plt.tight_layout()
+plt.show()
+
+-----------------------------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset into a DataFrame
+df = pd.read_csv("comb.csv")
+
+# Bar graph
+plt.figure(figsize=(10, 6))
+sns.barplot(data=df, x='Outcome', y='Glucose', palette='coolwarm', capsize=0.1)
+plt.title('Mean Glucose Level by Outcome')
+plt.xlabel('Outcome')
+plt.ylabel('Mean Glucose Level')
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.barplot(data=df, x='Outcome', y='BP', palette='coolwarm', capsize=0.1)
+plt.title('Mean Blood Pressure by Outcome')
+plt.xlabel('Outcome')
+plt.ylabel('Mean Blood Pressure')
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.barplot(data=df, x='Outcome', y='Insulin', palette='coolwarm', capsize=0.1)
+plt.title('Mean Insulin Level by Outcome')
+plt.xlabel('Outcome')
+plt.ylabel('Mean Insulin Level')
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.barplot(data=df, x='Outcome', y='BMI', palette='coolwarm', capsize=0.1)
+plt.title('Mean BMI by Outcome')
+plt.xlabel('Outcome')
+plt.ylabel('Mean BMI')
+plt.show()
+
+--------------------------------------------------------------------------------------
+
+# Pie chart 
+
+plt.figure(figsize=(8, 8))
+sizes = df['Insulin'].value_counts()
+labels = sizes.index
+plt.pie(sizes, labels=labels, autopct='%1.1f%%', colors=sns.color_palette('Set2'))
+plt.title('Distribution of Outcome Categories')
+plt.show()
+
+--------------------------------------------------------------------------
+#HEATMAP
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset into a DataFrame
+df = pd.read_csv("comb.csv")
+corr_matrix = df.corr()
+
+# Create a heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5)
+plt.title('Correlation Heatmap')
+plt.show()
+
+-----------------------------------------------------------------
+--------------------------------------------------------------
+#k means(impt)
+
+from sklearn.cluster import KMeans
+df=pd.read_csv("comb.csv")
+df1 = df[['Glucose', 'BP']]. copy()
+df1.dropna(inplace=True)
+kmeans = KMeans (n_clusters=3).fit(df1)
+centroids = kmeans.cluster_centers_
+print(centroids)
+plt.scatter(df1['Glucose'] , df1['BP'], c=kmeans.labels_.astype(float), s=50, alpha=1)
+plt.scatter(centroids[:,0], centroids[:,1], c= "red", s=50)
+plt.show()
+
+----------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
